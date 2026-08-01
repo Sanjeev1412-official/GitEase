@@ -59,7 +59,7 @@ export function BranchManager({
   return (
     <div className="space-y-6">
       {/* Header Bar */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h3 className="text-lg font-bold text-gray-900 tracking-tight flex items-center gap-3">
             <div className="p-2 bg-gray-50 rounded-xl border border-gray-100 shadow-sm">
@@ -87,13 +87,13 @@ export function BranchManager({
         {initialBranches.map((b) => (
           <div
             key={b.name}
-            className="p-5 bg-white border border-gray-100 rounded-3xl flex items-center justify-between gap-3 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group"
+            className="p-5 bg-white border border-gray-100 rounded-3xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group overflow-hidden w-full"
           >
-            <div className="flex items-center gap-3 truncate">
+            <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
               <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center shrink-0 group-hover:bg-red-50 transition-colors">
                 <GitBranch className="w-4 h-4 text-gray-400 group-hover:text-[var(--accent-red)] transition-colors" />
               </div>
-              <span className="text-sm font-bold text-gray-900 truncate">
+              <span className="text-sm font-bold text-gray-900 truncate flex-1 sm:flex-none">
                 {b.name}
               </span>
               {b.isProtected && (
@@ -104,7 +104,7 @@ export function BranchManager({
               )}
             </div>
 
-            <span className="font-mono text-xs font-medium text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-lg shadow-sm">
+            <span className="font-mono text-xs font-medium text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-lg shadow-sm w-max mt-1 sm:mt-0 pl-11 sm:pl-0">
               {b.sha.substring(0, 7)}
             </span>
           </div>

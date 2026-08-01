@@ -24,9 +24,9 @@ export function CommitTimeline({ commits }: CommitTimelineProps) {
         {commits.map((c) => (
           <div
             key={c.sha}
-            className="p-6 flex items-center justify-between gap-6 hover:bg-gray-50 transition-colors group"
+            className="p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 hover:bg-gray-50 transition-colors group"
           >
-            <div className="flex items-start gap-4 truncate">
+            <div className="flex items-start gap-4 truncate w-full sm:w-auto">
               <div className="w-10 h-10 rounded-full border border-gray-100 bg-white flex items-center justify-center text-gray-400 shrink-0 mt-0.5 shadow-sm group-hover:text-[var(--accent-red)] group-hover:border-red-100 transition-colors">
                 <GitCommit className="w-5 h-5" />
               </div>
@@ -51,7 +51,7 @@ export function CommitTimeline({ commits }: CommitTimelineProps) {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 shrink-0">
+            <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 shrink-0 mt-3 sm:mt-0 pl-14 sm:pl-0 pr-0 sm:pr-0">
               <span className="font-mono text-xs text-gray-600 font-semibold bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-lg shadow-sm">
                 {c.sha.substring(0, 7)}
               </span>

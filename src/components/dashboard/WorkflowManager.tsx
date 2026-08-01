@@ -120,9 +120,9 @@ export function WorkflowManager({
           {workflows.map((wf) => (
             <div
               key={wf.id}
-              className="p-5 bg-white border border-gray-100 rounded-3xl flex items-center justify-between gap-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group"
+              className="p-5 bg-white border border-gray-100 rounded-3xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group"
             >
-              <div className="space-y-1 truncate">
+              <div className="space-y-1 w-full sm:w-auto overflow-hidden">
                 <h4 className="text-sm font-bold text-gray-900 truncate">{wf.name}</h4>
                 <p className="text-xs font-medium text-gray-500 truncate">{wf.path}</p>
               </div>
@@ -131,7 +131,7 @@ export function WorkflowManager({
                 type="button"
                 onClick={() => handleTriggerWorkflow(wf.id)}
                 disabled={dispatchingWfId === wf.id}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gray-900 hover:bg-[var(--accent-red)] text-white text-sm font-semibold transition-all disabled:opacity-50 shrink-0 shadow-sm"
+                className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gray-900 hover:bg-[var(--accent-red)] text-white text-sm font-semibold transition-all disabled:opacity-50 shrink-0 shadow-sm w-full sm:w-auto"
               >
                 {dispatchingWfId === wf.id ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -165,9 +165,9 @@ export function WorkflowManager({
           {workflowRuns.map((run) => (
             <div
               key={run.id}
-              className="p-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors group"
+              className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:bg-gray-50 transition-colors group"
             >
-              <div className="space-y-1.5 truncate max-w-sm">
+              <div className="space-y-1.5 w-full sm:w-auto overflow-hidden">
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-gray-900 truncate">
                     {run.name || "Workflow Run"}
@@ -184,7 +184,7 @@ export function WorkflowManager({
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 shrink-0">
+              <div className="flex flex-wrap items-center gap-4 shrink-0 mt-2 sm:mt-0">
                 {getConclusionBadge(run.status, run.conclusion)}
                 <a
                   href={run.htmlUrl}

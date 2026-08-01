@@ -81,7 +81,7 @@ export function ReadmeEditor({
       <div className="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-4 p-4 sm:p-5 bg-white border border-gray-100 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
         
         {/* Tab Switcher */}
-        <div className="flex items-center justify-center gap-1.5 bg-gray-50 p-1.5 rounded-full border border-gray-100 text-sm font-semibold shadow-inner w-max mx-auto xl:mx-0">
+        <div className="flex items-center justify-center gap-1.5 bg-gray-50 p-1.5 rounded-full border border-gray-100 text-sm font-semibold shadow-inner w-full sm:w-max max-w-full overflow-x-auto mx-auto xl:mx-0">
           <button
             type="button"
             onClick={() => setActiveTab("visual")}
@@ -178,7 +178,7 @@ export function ReadmeEditor({
           <div className="flex flex-col h-full">
             {/* Formatting Toolbar */}
             {editor && (
-              <div className="flex items-center gap-1.5 p-3 border-b border-gray-100 bg-gray-50/50 overflow-x-auto custom-scrollbar">
+              <div className="flex items-center gap-1.5 p-3 border-b border-gray-100 bg-gray-50/50 overflow-x-auto custom-scrollbar flex-nowrap w-full">
                 <button
                   type="button"
                   onClick={() => editor.chain().focus().toggleBold().run()}

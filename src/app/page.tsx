@@ -90,6 +90,8 @@ export default function Home() {
   const isScrollingUnauth = useRef(false);
 
   const handleWheel = (e: React.WheelEvent) => {
+    if (typeof window !== "undefined" && window.innerWidth < 768) return;
+
     // Unauthenticated scrolljack
     if (!session && status !== "loading") {
       if (isScrollingUnauth.current) return;
@@ -350,20 +352,20 @@ export default function Home() {
   return (
     <div className="flex-1 flex flex-col bg-[var(--card-bg)] rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] overflow-hidden relative">
       {/* Soft Header */}
-      <header className="w-full px-8 py-6 flex items-center justify-between z-40 relative">
-        <div className="flex items-center gap-10">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center text-white shadow-sm">
-              <Code2 className="w-4 h-4" />
-            </div>
-            <span className="font-bold text-xl tracking-tight text-gray-900 font-sans">
-              Gitease.
-            </span>
+      <header className="w-full px-5 md:px-8 py-4 md:py-6 flex flex-wrap items-center justify-between z-40 relative gap-y-4">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center text-white shadow-sm">
+            <Code2 className="w-4 h-4" />
           </div>
+          <span className="font-bold text-xl tracking-tight text-gray-900 font-sans">
+            Gitease.
+          </span>
+        </div>
 
-          {/* Navigation Outline Pills -> Soft text links */}
-          {session && (
-            <nav className="hidden md:flex items-center gap-8">
+        {/* Navigation Outline Pills -> Soft text links */}
+        {session && (
+          <div className="flex items-center gap-3 order-3 md:order-2 w-full md:w-auto justify-center md:justify-start">
+            <nav className="flex items-center gap-6 md:gap-8">
               <button
                 onClick={() => setActiveView("push")}
                 className={`text-sm font-medium transition-colors ${
@@ -385,10 +387,10 @@ export default function Home() {
                 Dashboard
               </button>
             </nav>
-          )}
-        </div>
+          </div>
+        )}
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 order-2 md:order-3">
           {status === "loading" ? (
             <div className="w-8 h-8 rounded-full bg-gray-100 animate-pulse" />
           ) : session?.user ? (
@@ -431,16 +433,16 @@ export default function Home() {
 
       {/* Scrollable Content Container */}
       <div 
-        className="flex-1 overflow-hidden custom-scrollbar flex flex-col"
+        className="flex-1 overflow-y-auto overflow-x-hidden md:overflow-hidden custom-scrollbar flex flex-col w-full max-w-full"
         onWheel={handleWheel}
       >
         {/* Main Container */}
-        <main className="flex-1 w-full max-w-6xl mx-auto px-6 py-8 flex flex-col gap-12 relative z-10 min-h-0">
+        <main className="flex-1 w-full max-w-6xl mx-auto px-5 md:px-6 py-6 md:py-8 flex flex-col gap-12 relative z-10 min-h-0">
           {/* Unauthenticated State View */}
         {!session && status !== "loading" && (
-          <div className="flex-1 relative w-full">
+          <div className="flex-1 relative w-full flex flex-col md:block">
             {/* Section Indicators */}
-            <div className="fixed right-4 sm:right-18 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-50">
+            <div className="hidden md:flex fixed right-4 sm:right-18 top-1/2 -translate-y-1/2 flex-col gap-3 z-50">
               {[0, 1].map((idx) => (
                 <button
                   key={idx}
@@ -451,10 +453,10 @@ export default function Home() {
             </div>
 
             {/* Section 0: Hero */}
-            <div className={`absolute inset-0 flex flex-col lg:flex-row items-center gap-12 transition-all duration-800 ease-in-out ${
+            <div className={`relative md:absolute md:inset-0 flex flex-col lg:flex-row items-center gap-12 transition-all duration-800 ease-in-out py-10 md:py-0 ${
               unauthSection === 0
-                ? "opacity-100 translate-y-0 pointer-events-auto z-10 delay-300"
-                : "opacity-0 -translate-y-12 pointer-events-none z-0 delay-0"
+                ? "opacity-100 translate-y-0 pointer-events-auto z-10 md:delay-300"
+                : "opacity-100 md:opacity-0 md:-translate-y-12 pointer-events-auto md:pointer-events-none md:z-0 md:delay-0"
             }`}>
               {/* Left: Headline + CTA */}
               <div className="flex-1 space-y-8">
@@ -511,10 +513,10 @@ export default function Home() {
             </div>
 
             {/* Section 1: Footer */}
-            <div className={`absolute inset-0 flex flex-col justify-center transition-all duration-800 ease-in-out ${
+            <div className={`relative md:absolute md:inset-0 flex flex-col justify-center transition-all duration-800 ease-in-out py-10 md:py-0 ${
               unauthSection === 1
-                ? "opacity-100 translate-y-0 pointer-events-auto z-10 delay-300"
-                : "opacity-0 translate-y-12 pointer-events-none z-0 delay-0"
+                ? "opacity-100 translate-y-0 pointer-events-auto z-10 md:delay-300"
+                : "opacity-100 md:opacity-0 md:translate-y-12 pointer-events-auto md:pointer-events-none md:z-0 md:delay-0"
             }`}>
               <Footer />
             </div>
@@ -529,9 +531,9 @@ export default function Home() {
 
         {/* Push View */}
         {session && activeView === "push" && (
-          <div className="flex-1 relative w-full h-[60vh] min-h-[500px]">
+          <div className="flex-1 relative w-full flex flex-col md:block md:h-[60vh] md:min-h-[500px]">
             {/* Section Indicators */}
-            <div className="fixed right-4 sm:right-18 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-50">
+            <div className="hidden md:flex fixed right-4 sm:right-18 top-1/2 -translate-y-1/2 flex-col gap-3 z-50">
               {[0, 1, 2, 3].map((idx) => (
                 <button
                   key={idx}
@@ -542,16 +544,20 @@ export default function Home() {
             </div>
 
             {/* Section 0: Hero */}
-            <div className={`absolute inset-0 flex flex-col justify-center transition-all duration-800 ease-in-out ${currentSection === 0 ? "opacity-100 translate-y-0 pointer-events-auto z-10 delay-500" : "opacity-0 -translate-y-12 pointer-events-none z-0 delay-0"}`}>
+            <div id="hero-section" className={`relative md:absolute md:inset-0 flex flex-col justify-center transition-all duration-800 ease-in-out py-8 md:py-0 ${
+              currentSection === 0 
+                ? "opacity-100 translate-y-0 pointer-events-auto z-10 md:delay-500" 
+                : "opacity-100 md:opacity-0 md:-translate-y-12 pointer-events-auto md:pointer-events-none md:z-0 md:delay-0"
+            }`}>
               <div className="flex flex-col lg:flex-row lg:items-center gap-12">
                 {/* Left: Headline + Steps */}
                 <div className="flex-1 space-y-8">
-                  <div className="flex items-center gap-3">
-                    <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 text-xs font-semibold text-amber-700 border border-amber-100">
-                      <Sparkles className="w-3.5 h-3.5" />
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                    <span className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-amber-50 text-[10px] sm:text-xs font-semibold text-amber-700 border border-amber-100">
+                      <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
                       Zero-config Git workflow
                     </span>
-                    <span className="inline-flex px-4 py-1.5 rounded-full bg-red-50 text-xs font-semibold text-red-600 border border-red-100">
+                    <span className="inline-flex px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-red-50 text-[10px] sm:text-xs font-semibold text-red-600 border border-red-100">
                       No terminal required
                     </span>
                   </div>
@@ -567,9 +573,12 @@ export default function Home() {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-4 pt-2">
+                  <div className="flex flex-wrap items-center gap-4 pt-2">
                     <button
-                      onClick={() => setCurrentSection(1)}
+                      onClick={() => {
+                        setCurrentSection(1);
+                        document.getElementById("upload-section")?.scrollIntoView({ behavior: "smooth" });
+                      }}
                       className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gray-900 hover:bg-black text-white font-semibold text-sm transition-all shadow-lg shadow-gray-900/20 hover:-translate-y-0.5"
                     >
                       <Upload className="w-4 h-4" />
@@ -623,8 +632,14 @@ export default function Home() {
             </div>
 
             {/* Section 1: Upload Container */}
-            <div className={`absolute inset-0 flex flex-col justify-center transition-all duration-800 ease-in-out ${currentSection === 1 ? "opacity-100 translate-y-0 pointer-events-auto z-10 delay-500" : currentSection < 1 ? "opacity-0 translate-y-12 pointer-events-none z-0 delay-0" : "opacity-0 -translate-y-12 pointer-events-none z-0 delay-0"}`}>
-              <div className="bg-gray-50/50 rounded-[2.5rem] p-8 sm:p-12 space-y-8 border border-gray-100 relative max-w-4xl w-full mx-auto">
+            <div id="upload-section" className={`relative md:absolute md:inset-0 flex flex-col justify-center transition-all duration-800 ease-in-out py-8 md:py-0 ${
+              currentSection === 1 
+                ? "opacity-100 translate-y-0 pointer-events-auto z-10 md:delay-500" 
+                : currentSection < 1 
+                  ? "opacity-100 md:opacity-0 md:translate-y-12 pointer-events-auto md:pointer-events-none md:z-0 md:delay-0" 
+                  : "opacity-100 md:opacity-0 md:-translate-y-12 pointer-events-auto md:pointer-events-none md:z-0 md:delay-0"
+            }`}>
+              <div className="bg-gray-50/50 rounded-[2.5rem] p-6 sm:p-12 space-y-8 border border-gray-100 relative max-w-4xl w-full mx-auto">
                 {/* Decorative background shape */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-[3rem] mix-blend-overlay opacity-50 pointer-events-none transform translate-x-1/2 -translate-y-1/2" />
                 
@@ -633,7 +648,7 @@ export default function Home() {
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
-                  className={`relative rounded-3xl p-10 sm:p-14 text-center transition-all duration-300 cursor-pointer overflow-hidden bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] border ${
+                  className={`relative rounded-3xl p-6 sm:p-10 md:p-14 text-center transition-all duration-300 cursor-pointer overflow-hidden bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] border ${
                     isDragging
                       ? "border-[var(--accent-red)] scale-[1.02] shadow-xl"
                       : "border-transparent hover:border-gray-200 hover:shadow-lg"
@@ -643,7 +658,11 @@ export default function Home() {
                   <input
                     type="file"
                     ref={folderInputRef}
-                    onChange={(e) => { handleFolderSelect(e); setCurrentSection(2); }}
+                    onChange={(e) => { 
+                      handleFolderSelect(e); 
+                      setCurrentSection(2); 
+                      document.getElementById("form-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }}
                     className="hidden"
                     {...({ webkitdirectory: "", directory: "", multiple: true } as any)}
                   />
@@ -651,7 +670,11 @@ export default function Home() {
                     type="file"
                     ref={zipInputRef}
                     accept=".zip"
-                    onChange={(e) => { handleZipSelect(e); setCurrentSection(2); }}
+                    onChange={(e) => { 
+                      handleZipSelect(e); 
+                      setCurrentSection(2); 
+                      document.getElementById("form-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }}
                     className="hidden"
                   />
 
@@ -820,7 +843,11 @@ export default function Home() {
             </div>
 
             {/* Section 2: Form & Results */}
-            <div className={`absolute inset-0 flex flex-col justify-center transition-all duration-800 ease-in-out ${currentSection === 2 ? "opacity-100 translate-y-0 pointer-events-auto z-10 delay-500" : "opacity-0 translate-y-12 pointer-events-none z-0 delay-0"}`}>
+            <div id="form-section" className={`relative md:absolute md:inset-0 flex flex-col justify-center transition-all duration-800 ease-in-out py-8 md:py-0 ${
+              currentSection === 2 
+                ? "opacity-100 translate-y-0 pointer-events-auto z-10 md:delay-500" 
+                : "opacity-100 md:opacity-0 md:translate-y-12 pointer-events-auto md:pointer-events-none md:z-0 md:delay-0"
+            }`}>
               <div className="max-w-3xl w-full mx-auto space-y-6">
                 
                 {/* Success Alert Banner */}
@@ -864,7 +891,12 @@ export default function Home() {
                         Open Dashboard
                       </button>
                       <button
-                        onClick={() => { clearFiles(); setResult(null); setCurrentSection(1); }}
+                        onClick={() => { 
+                          clearFiles(); 
+                          setResult(null); 
+                          setCurrentSection(1);
+                          document.getElementById("upload-section")?.scrollIntoView({ behavior: "smooth" });
+                        }}
                         className="px-6 py-2.5 rounded-full bg-transparent hover:bg-emerald-100 text-emerald-700 text-sm font-medium transition-colors"
                       >
                         Upload another
@@ -887,7 +919,7 @@ export default function Home() {
                 )}
 
                 {/* Form Wrapper */}
-                <div className="bg-white rounded-[2.5rem] p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 space-y-8">
+                <div className="bg-white rounded-[2.5rem] p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 space-y-8">
                   {/* Settings Inputs */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2.5">
@@ -979,7 +1011,11 @@ export default function Home() {
             </div>
 
             {/* Section 3: Footer */}
-            <div className={`absolute inset-0 flex flex-col transition-all duration-800 ease-in-out ${currentSection === 3 ? "opacity-100 translate-y-0 pointer-events-auto z-10 delay-500" : "opacity-0 -translate-y-12 pointer-events-none z-0 delay-0"}`}>
+            <div className={`relative md:absolute md:inset-0 flex flex-col justify-center transition-all duration-800 ease-in-out py-8 md:py-0 ${
+              currentSection === 3 
+                ? "opacity-100 translate-y-0 pointer-events-auto z-10 md:delay-500" 
+                : "opacity-100 md:opacity-0 md:-translate-y-12 pointer-events-auto md:pointer-events-none md:z-0 md:delay-0"
+            }`}>
               <Footer />
             </div>
           </div>

@@ -43,6 +43,7 @@ export function Dashboard({ onPushUpdateRepo }: DashboardProps) {
   const isScrolling = useRef(false);
 
   const handleWheel = (e: React.WheelEvent) => {
+    if (typeof window !== "undefined" && window.innerWidth < 768) return;
     if (isScrolling.current) return;
     if (Math.abs(e.deltaY) < 10) return;
 
@@ -142,9 +143,9 @@ export function Dashboard({ onPushUpdateRepo }: DashboardProps) {
   }
 
   return (
-    <div className="flex-1 relative w-full h-[60vh] min-h-[500px]" onWheel={handleWheel}>
+    <div className="flex-1 relative w-full flex flex-col md:block md:h-[60vh] md:min-h-[500px]" onWheel={handleWheel}>
       {/* Section Indicators */}
-      <div className="fixed right-4 sm:right-18 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-50">
+      <div className="hidden md:flex fixed right-4 sm:right-18 top-1/2 -translate-y-1/2 flex-col gap-3 z-50">
         {[0, 1, 2].map((idx) => (
           <button
             key={idx}
@@ -155,7 +156,10 @@ export function Dashboard({ onPushUpdateRepo }: DashboardProps) {
       </div>
 
       {/* Section 0: Header & Grid */}
-      <div className={`absolute inset-0 flex flex-col pt-4 pb-6 transition-all duration-800 ease-in-out ${currentSection === 0 ? "opacity-100 translate-y-0 pointer-events-auto z-10 delay-500" : "opacity-0 -translate-y-12 pointer-events-none z-0 delay-0"}`}>
+      <div className={`relative md:absolute md:inset-0 flex flex-col pt-4 pb-6 transition-all duration-800 ease-in-out ${currentSection === 0
+          ? "opacity-100 translate-y-0 pointer-events-auto z-10 md:delay-500"
+          : "opacity-100 md:opacity-0 md:-translate-y-12 pointer-events-auto md:pointer-events-none md:z-0 md:delay-0"
+        }`}>
         <div className="flex flex-col h-full space-y-6 max-w-6xl mx-auto w-full">
           {/* Dashboard Editorial Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6 border-b border-gray-100 pb-6 shrink-0">
@@ -195,7 +199,7 @@ export function Dashboard({ onPushUpdateRepo }: DashboardProps) {
           </div>
 
           {/* Repositories Grid matching editorial card style */}
-          <div 
+          <div
             className="flex-1 overflow-y-auto custom-scrollbar pr-4 -mr-4"
             onWheel={(e) => e.stopPropagation()}
           >
@@ -270,7 +274,7 @@ export function Dashboard({ onPushUpdateRepo }: DashboardProps) {
                     <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-medium text-gray-500">
                       <div className="flex items-center gap-3">
                         {repo.language && (
-                           <span className="text-gray-700 bg-white border border-gray-100 px-2 py-1 rounded-md shadow-sm">
+                          <span className="text-gray-700 bg-white border border-gray-100 px-2 py-1 rounded-md shadow-sm">
                             {repo.language}
                           </span>
                         )}
@@ -303,7 +307,10 @@ export function Dashboard({ onPushUpdateRepo }: DashboardProps) {
       </div>
 
       {/* Section 1: Security & Stats */}
-      <div className={`absolute inset-0 flex flex-col justify-center transition-all duration-800 ease-in-out ${currentSection === 1 ? "opacity-100 translate-y-0 pointer-events-auto z-10 delay-500" : "opacity-0 translate-y-12 pointer-events-none z-0 delay-0"}`}>
+      <div className={`relative md:absolute md:inset-0 flex flex-col justify-center transition-all duration-800 ease-in-out py-8 md:py-0 ${currentSection === 1
+          ? "opacity-100 translate-y-0 pointer-events-auto z-10 md:delay-500"
+          : "opacity-100 md:opacity-0 md:translate-y-12 pointer-events-auto md:pointer-events-none md:z-0 md:delay-0"
+        }`}>
         <div className="space-y-8 max-w-4xl mx-auto w-full px-4">
           <div className="text-center space-y-3 pb-4">
             <h2 className="text-3xl font-semibold text-gray-900 tracking-tight">Account & Security</h2>
@@ -320,7 +327,7 @@ export function Dashboard({ onPushUpdateRepo }: DashboardProps) {
                 Gitease never scans unapproved repositories. Only explicitly tracked repos are displayed on this dashboard. Your code remains securely on GitHub.
               </p>
             </div>
-            
+
             <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] space-y-4 hover:shadow-lg transition-shadow flex flex-col justify-between">
               <div>
                 <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-900 mb-6">
@@ -343,7 +350,10 @@ export function Dashboard({ onPushUpdateRepo }: DashboardProps) {
       </div>
 
       {/* Section 2: Footer */}
-      <div className={`absolute inset-0 flex flex-col transition-all duration-800 ease-in-out ${currentSection === 2 ? "opacity-100 translate-y-0 pointer-events-auto z-10 delay-500" : "opacity-0 -translate-y-12 pointer-events-none z-0 delay-0"}`}>
+      <div className={`relative md:absolute md:inset-0 flex flex-col transition-all duration-800 ease-in-out py-8 md:py-0 ${currentSection === 2
+          ? "opacity-100 translate-y-0 pointer-events-auto z-10 md:delay-500"
+          : "opacity-100 md:opacity-0 md:-translate-y-12 pointer-events-auto md:pointer-events-none md:z-0 md:delay-0"
+        }`}>
         <Footer />
       </div>
 

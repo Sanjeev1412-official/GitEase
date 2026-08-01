@@ -75,7 +75,7 @@ export function ReleaseManager({
   return (
     <div className="space-y-6">
       {/* Header Bar */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h3 className="text-lg font-bold text-gray-900 tracking-tight flex items-center gap-3">
             <div className="p-2 bg-gray-50 rounded-xl border border-gray-100 shadow-sm">

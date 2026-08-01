@@ -101,8 +101,8 @@ export function IssueManager({
   return (
     <div className="space-y-6">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-white border border-gray-100 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-        <div className="flex items-center gap-1 bg-gray-50 p-1.5 rounded-full border border-gray-100 text-sm font-semibold shadow-inner overflow-x-auto custom-scrollbar">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-white border border-gray-100 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] w-full">
+        <div className="flex items-center gap-1 bg-gray-50 p-1.5 rounded-full border border-gray-100 text-sm font-semibold shadow-inner overflow-x-auto custom-scrollbar w-full sm:w-auto max-w-full">
           <button
             type="button"
             onClick={() => setFilterState("open")}
@@ -141,7 +141,7 @@ export function IssueManager({
         <button
           type="button"
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[var(--accent-red)] hover:bg-red-600 text-white text-sm font-semibold transition-all shadow-md shadow-red-500/20 shrink-0"
+          className="w-full sm:w-auto justify-center flex items-center gap-2 px-6 py-3 sm:py-2.5 rounded-full bg-[var(--accent-red)] hover:bg-red-600 text-white text-sm font-semibold transition-all shadow-md shadow-red-500/20 shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>New Issue</span>
@@ -153,9 +153,9 @@ export function IssueManager({
         {filteredIssues.map((iss) => (
           <div
             key={iss.number}
-            className="p-6 flex items-start justify-between gap-6 hover:bg-gray-50 transition-colors"
+            className="p-6 flex flex-col sm:flex-row items-start justify-between gap-4 sm:gap-6 hover:bg-gray-50 transition-colors"
           >
-            <div className="flex items-start gap-4 space-y-1 truncate">
+            <div className="flex items-start gap-4 space-y-1 truncate w-full sm:w-auto">
               {iss.state === "open" ? (
                 <CircleDot className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
               ) : (
@@ -195,12 +195,12 @@ export function IssueManager({
               </div>
             </div>
 
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-3 shrink-0 ml-9 sm:ml-0 mt-3 sm:mt-0 pr-9 sm:pr-0">
               <button
                 type="button"
                 onClick={() => handleToggleState(iss.number, iss.state)}
                 disabled={togglingNumber === iss.number}
-                className="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition-colors disabled:opacity-50"
+                className="w-full sm:w-auto px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition-colors disabled:opacity-50"
               >
                 {togglingNumber === iss.number ? (
                   <Loader2 className="w-4 h-4 animate-spin mx-auto" />
@@ -296,18 +296,18 @@ export function IssueManager({
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 mt-6">
+              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center sm:justify-end gap-3 pt-4 border-t border-gray-100 mt-6">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-6 py-2.5 rounded-full bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-sm font-semibold transition-colors shadow-sm"
+                  className="w-full sm:w-auto px-6 py-3 sm:py-2.5 rounded-full bg-gray-50 sm:bg-white hover:bg-gray-100 sm:hover:bg-gray-50 border border-gray-200 text-gray-700 text-sm font-semibold transition-colors shadow-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex items-center gap-2 px-8 py-2.5 rounded-full bg-[var(--accent-red)] hover:bg-red-600 text-white text-sm font-semibold shadow-md shadow-red-500/20 disabled:opacity-50 transition-all"
+                  className="w-full sm:w-auto justify-center flex items-center gap-2 px-8 py-3 sm:py-2.5 rounded-full bg-[var(--accent-red)] hover:bg-red-600 text-white text-sm font-semibold shadow-md shadow-red-500/20 disabled:opacity-50 transition-all"
                 >
                   {isSubmitting ? (
                     <Loader2 className="w-4 h-4 animate-spin" />

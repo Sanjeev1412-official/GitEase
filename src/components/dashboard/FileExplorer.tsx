@@ -107,14 +107,14 @@ function ConfirmDeleteModal({
           />
         </div>
 
-        <div className="flex items-center gap-3 justify-end pt-1">
-          <button onClick={onCancel} className="px-5 py-2.5 rounded-full text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">
+        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 sm:justify-end pt-2">
+          <button onClick={onCancel} className="w-full sm:w-auto px-5 py-3 sm:py-2.5 rounded-full text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors bg-gray-50 sm:bg-transparent">
             Cancel
           </button>
           <button
             onClick={onConfirm}
             disabled={isDeleting}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition-all disabled:opacity-50"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 sm:py-2.5 rounded-full bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition-all disabled:opacity-50"
           >
             {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
             {isDeleting ? "Deleting..." : "Delete"}
@@ -220,7 +220,7 @@ function FileEditorModal({
         style={{ height: "44px", background: "#161b22", borderColor: "#30363d" }}
       >
         {/* Window controls */}
-        <div className="flex items-center gap-2 mr-6">
+        <div className="flex items-center gap-2 mr-3 sm:mr-6 shrink-0">
           <button
             onClick={handleClose}
             className="w-3 h-3 rounded-full flex items-center justify-center group"
@@ -248,12 +248,12 @@ function FileEditorModal({
         </div>
 
         {/* Right — path breadcrumb */}
-        <div className="flex-1 flex justify-center">
-          <span className="text-xs" style={{ color: "#6e7681" }}>{filePath}</span>
+        <div className="flex-1 justify-center hidden sm:flex truncate px-4">
+          <span className="text-xs truncate" style={{ color: "#6e7681" }}>{filePath}</span>
         </div>
 
         {/* Right — line count */}
-        <span className="text-xs font-mono" style={{ color: "#6e7681" }}>{lineCount} lines</span>
+        <span className="text-xs font-mono shrink-0 hidden sm:inline-block" style={{ color: "#6e7681" }}>{lineCount} lines</span>
       </div>
 
       {/* ── Editor Body ── */}
@@ -270,11 +270,11 @@ function FileEditorModal({
               ref={gutterRef}
               className="select-none shrink-0 text-right overflow-hidden font-mono text-xs leading-6 pt-3 pb-3"
               style={{
-                width: "60px",
+                width: "40px",
                 background: "#0d1117",
                 color: "#3d444d",
-                paddingRight: "12px",
-                paddingLeft: "8px",
+                paddingRight: "8px",
+                paddingLeft: "4px",
                 borderRight: "1px solid #21262d",
               }}
               aria-hidden
@@ -293,7 +293,7 @@ function FileEditorModal({
               onWheel={(e) => e.stopPropagation()}
               autoFocus
               spellCheck={false}
-              className="flex-1 resize-none font-mono text-sm focus:outline-none pt-3 pb-3 pl-4 pr-6"
+              className="flex-1 resize-none font-mono text-[13px] sm:text-sm focus:outline-none pt-3 pb-3 pl-3 sm:pl-4 pr-3 sm:pr-6 w-full"
               style={{
                 background: "#0d1117",
                 color: "#e6edf3",
@@ -311,19 +311,18 @@ function FileEditorModal({
         className="flex items-center justify-between px-4 shrink-0 text-xs font-mono"
         style={{ height: "24px", background: "#f78166", color: "#fff" }}
       >
-        <div className="flex items-center gap-4">
-          <span>GitEase Editor</span>
-          <span>{owner}/{repo}</span>
+        <div className="flex items-center gap-2 sm:gap-4 truncate">
+          <span className="hidden sm:inline">GitEase Editor</span>
+          <span className="truncate">{owner}/{repo}</span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 shrink-0 pl-2">
           <span>Ln {lineCount}</span>
-          <span>UTF-8</span>
+          <span className="hidden sm:inline">UTF-8</span>
         </div>
       </div>
 
-      {/* ── Commit Bar ── */}
       <div
-        className="shrink-0 px-6 py-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
+        className="shrink-0 px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
         style={{ background: "#161b22", borderTop: "1px solid #30363d" }}
       >
         {error && (
@@ -358,10 +357,10 @@ function FileEditorModal({
           onFocus={(e) => (e.currentTarget.style.borderColor = "#f78166")}
           onBlur={(e) => (e.currentTarget.style.borderColor = "#30363d")}
         />
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2 shrink-0">
           <button
             onClick={handleClose}
-            className="px-5 py-3 rounded-xl text-sm font-medium transition-colors"
+            className="w-full sm:w-auto px-5 py-3.5 sm:py-3 rounded-xl text-sm font-medium transition-colors text-center"
             style={{ color: "#8b949e", border: "1px solid #30363d" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "#21262d"; e.currentTarget.style.color = "#e6edf3"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#8b949e"; }}
@@ -371,7 +370,7 @@ function FileEditorModal({
           <button
             onClick={handleSave}
             disabled={isSaving || isLoading || saveSuccess}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all disabled:opacity-50"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 sm:py-3 rounded-xl text-sm font-semibold transition-all disabled:opacity-50"
             style={{ background: "#f78166", color: "#fff" }}
             onMouseEnter={(e) => { if (!isSaving && !saveSuccess) e.currentTarget.style.background = "#e55e4a"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "#f78166"; }}
@@ -502,7 +501,7 @@ export function FileExplorer({ owner, repo }: FileExplorerProps) {
             <div className="flex items-center gap-2 text-sm text-gray-400"><Loader2 className="w-4 h-4 animate-spin" /> Loading...</div>
           ) : cloneUrls ? (
             <div className="space-y-3">
-              <div className="flex items-center gap-1 bg-gray-50 p-1 rounded-xl border border-gray-100 w-max text-xs font-semibold">
+              <div className="flex flex-wrap items-center gap-1 bg-gray-50 p-1 rounded-xl border border-gray-100 w-full sm:w-max max-w-full text-xs font-semibold">
                 {([
                   { key: "https" as const, label: "HTTPS", icon: <Link className="w-3 h-3" /> },
                   { key: "ssh" as const, label: "SSH", icon: <KeyRound className="w-3 h-3" /> },
@@ -590,8 +589,8 @@ export function FileExplorer({ owner, repo }: FileExplorerProps) {
                     {item.type === "file" ? formatSize(item.size) : ""}
                   </span>
 
-                  {/* Action buttons (visible on hover) */}
-                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all shrink-0">
+                  {/* Action buttons (always visible on mobile, hover on desktop) */}
+                  <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all shrink-0">
                     {/* Edit (files only) */}
                     {item.type === "file" && (
                       <button

@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { RepoSummary, verifyAndGetSingleRepo } from "@/app/actions/dashboard";
-import { Loader2, Plus, ShieldCheck } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { RepoSummary, verifyAndGetSingleRepo, getUserRepos } from "@/app/actions/dashboard";
+import { Loader2, Plus, ShieldCheck, Lock, Globe } from "lucide-react";
 
 function GithubIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
@@ -30,6 +30,34 @@ export function RepoImportModal({ onClose, onImportRepo }: RepoImportModalProps)
   const [repoInput, setRepoInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [suggestions, setSuggestions] = useState<Array<{ fullName: string; name: string; owner: string; isPrivate: boolean }>>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    async function loadRepos() {
+      const res = await getUserRepos();
+      if (res.success && res.repos) {
+        setSuggestions(res.repos);
+      }
+    }
+    loadRepos();
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const filteredSuggestions = suggestions.filter((repo) =>
+    repo.fullName.toLowerCase().includes(repoInput.toLowerCase())
+  ).slice(0, 10); // show top 10 matches
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,7 +117,7 @@ export function RepoImportModal({ onClose, onImportRepo }: RepoImportModalProps)
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-1.5">
+          <div className="space-y-1.5 relative" ref={dropdownRef}>
             <label className="text-xs font-bold font-mono text-zinc-700 uppercase">
               REPOSITORY NAME OR GITHUB URL
             </label>
@@ -97,9 +125,35 @@ export function RepoImportModal({ onClose, onImportRepo }: RepoImportModalProps)
               type="text"
               placeholder="e.g. repo-name or username/repo-name"
               value={repoInput}
-              onChange={(e) => setRepoInput(e.target.value)}
+              onChange={(e) => {
+                setRepoInput(e.target.value);
+                setShowDropdown(true);
+              }}
+              onFocus={() => setShowDropdown(true)}
               className="w-full px-4 py-3 rounded-xl bg-zinc-50 border border-zinc-300 text-xs text-black placeholder-zinc-400 focus:outline-none focus:border-black font-mono"
             />
+            {showDropdown && repoInput.trim() !== "" && filteredSuggestions.length > 0 && (
+              <div className="absolute z-20 w-full mt-1 bg-white border border-zinc-200 rounded-xl shadow-xl max-h-48 overflow-y-auto custom-scrollbar">
+                {filteredSuggestions.map((repo) => (
+                  <button
+                    key={repo.fullName}
+                    type="button"
+                    onClick={() => {
+                      setRepoInput(repo.fullName);
+                      setShowDropdown(false);
+                    }}
+                    className="w-full text-left px-4 py-3 hover:bg-zinc-50 border-b border-zinc-100 last:border-0 flex items-center gap-2 transition-colors"
+                  >
+                    {repo.isPrivate ? (
+                      <Lock className="w-4 h-4 text-amber-500 shrink-0" />
+                    ) : (
+                      <Globe className="w-4 h-4 text-zinc-400 shrink-0" />
+                    )}
+                    <span className="text-xs font-mono text-zinc-800 truncate">{repo.fullName}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="flex items-center justify-end gap-3 pt-2">

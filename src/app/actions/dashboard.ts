@@ -145,6 +145,36 @@ export async function fetchTrackedRepos(
   }
 }
 
+// 1.5 Fetch authenticated user's repositories for autocomplete
+export async function getUserRepos(): Promise<{
+  success: boolean;
+  repos?: { fullName: string; name: string; owner: string; isPrivate: boolean }[];
+  error?: string;
+}> {
+  try {
+    const octokit = await getOctokit();
+    const { data } = await octokit.rest.repos.listForAuthenticatedUser({
+      sort: "updated",
+      per_page: 50,
+    });
+
+    const repos = data.map((r) => ({
+      fullName: r.full_name,
+      name: r.name,
+      owner: r.owner.login,
+      isPrivate: r.private,
+    }));
+
+    return { success: true, repos };
+  } catch (error: any) {
+    console.error("getUserRepos error:", error);
+    return {
+      success: false,
+      error: error?.message || "Failed to fetch user repositories.",
+    };
+  }
+}
+
 // 2. Verify and fetch a single repository explicitly specified by user consent
 export async function verifyAndGetSingleRepo(
   repoInput: string
