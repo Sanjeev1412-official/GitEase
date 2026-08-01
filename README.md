@@ -43,7 +43,7 @@ Want to run GitEase on your own machine? Follow these steps:
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/gitease.git
+git clone https://github.com/Sanjeev1412-official/gitease.git
 cd gitease
 ```
 
