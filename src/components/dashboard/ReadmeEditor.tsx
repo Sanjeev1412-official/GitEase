@@ -38,7 +38,7 @@ export function ReadmeEditor({
     extensions: [StarterKit, Markdown],
     content: initialContent,
     onUpdate: ({ editor }) => {
-      setContent(editor.storage.markdown.getMarkdown());
+      setContent((editor.storage as any).markdown.getMarkdown());
     },
     editorProps: {
       attributes: {
